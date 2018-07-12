@@ -1,0 +1,40 @@
+FROM microsoft/windowsservercore
+
+#VCREDIST 2005
+ADD https://download.microsoft.com/download/d/3/4/d342efa6-3266-4157-a2ec-5174867be706/vcredist_x86.exe C:/vcredist/2005_32.exe
+ADD https://download.microsoft.com/download/9/1/4/914851c6-9141-443b-bdb4-8bad3a57bea9/vcredist_x64.exe C:/vcredist/2005_64.exe
+RUN C:/vcredist/2005_32.exe /Q
+RUN C:/vcredist/2005_64.exe /Q
+
+# VCREDIST 2008
+ADD https://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe C:/vcredist/2008_32.exe
+ADD https://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x64.exe C:/vcredist/2008_64.exe
+RUN C:/vcredist/2008_32.exe /qb
+RUN C:/vcredist/2008_64.exe /qb
+
+# VCREDIST 2010
+ADD http://download.microsoft.com/download/C/6/D/C6D0FD4E-9E53-4897-9B91-836EBA2AACD3/vcredist_x86.exe C:/vcredist/2010_32.exe
+ADD https://download.microsoft.com/download/3/2/2/3224B87F-CFA0-4E70-BDA3-3DE650EFEBA5/vcredist_x64.exe C:/vcredist/2010_64.exe
+RUN C:/vcredist/2010_32.exe /q /norestart
+RUN C:/vcredist/2010_64.exe /q /norestart
+
+# VCREDIST 2012
+ADD http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x86.exe C:/vcredist/2012_32.exe
+ADD http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe C:/vcredist/2012_64.exe
+RUN C:/vcredist/2012_32.exe /q /norestart
+RUN C:/vcredist/2012_64.exe /q /norestart
+
+# VCREDIST 2013
+ADD https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe C:/vcredist/2013_32.exe
+ADD https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe C:/vcredist/2013_64.exe
+RUN C:/vcredist/2013_32.exe /install /quiet /norestart
+RUN C:/vcredist/2013_64.exe /install /quiet /norestart
+
+# VCREDIST 2017
+ADD https://download.visualstudio.microsoft.com/download/pr/12319034/ccd261eb0e095411af3b306273231b68/VC_redist.x86.exe C:/vcredist/2017_32.exe
+ADD https://download.visualstudio.microsoft.com/download/pr/12328699/a80e967515b2a4faf37bf15387f1c5c3/VC_redist.x64.exe C:/vcredist/2017_64.exe
+RUN C:/vcredist/2017_32.exe /install /quiet /norestart
+RUN C:/vcredist/2017_64.exe /install /quiet /norestart
+
+#Removing the installers
+RUN rmdir C:\vcredist /S /Q
