@@ -1,0 +1,3 @@
+# Ignore build scripts
+*.cmd
+*.bat
