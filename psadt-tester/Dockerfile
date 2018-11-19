@@ -1,6 +1,7 @@
 FROM microsoft/dotnet-framework:3.5-runtime-windowsservercore-1803
 SHELL ["powershell", "-Command"]
 ARG Office=""
+USER "NT AUTHORITY\\SYSTEM"
 
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
