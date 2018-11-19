@@ -1,3 +1,2 @@
 docker build . -t khaffner/psadt-tester:64bitOffice365ProPlus --build-arg Office=64-bit
-REM docker push khaffner/psadt-tester:64bitOffice365ProPlus
-PAUSE
+docker push khaffner/psadt-tester:64bitOffice365ProPlus
