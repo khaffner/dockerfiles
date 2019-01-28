@@ -1,0 +1,23 @@
+FROM httpd:2.4
+
+# Install powershell for Debian 9
+RUN apt-get update && apt-get install -y curl gnupg apt-transport-https
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
+RUN apt-get update && apt-get install -y powershell
+
+# Change to powershell, lol
+SHELL ["pwsh", "-Command"]
+
+# Create folder structure and html file
+RUN New-Item -Path /usr/local/apache2/htdocs/index.html -Force
+
+# Get the data, crunch it and save it to html file
+RUN Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/khaffner/Consumer-Tools/master/Get-Alcohol.ps1'));\
+    Get-Alcohol |\
+    Sort-Object PricePerAlcohol |\
+    ConvertTo-Html |\
+    Set-Content /usr/local/apache2/htdocs/index.html -Force
+
+# Build: docker build --no-cache -t alcohol .
+# Run: docker run -dit -p 8080:80 alcohol
