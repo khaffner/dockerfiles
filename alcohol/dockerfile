@@ -15,7 +15,7 @@ RUN $Path = '/usr/local/apache2/htdocs';\
     # Get the function
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/khaffner/Consumer-Tools/master/Get-Alcohol.ps1'));\
     # Run the function and save the data
-    $Data = Get-Alcohol;\
+    $Data = Get-Alcohol | Where-Object AlcoholPercentage -GT 1;\
     # Create html File
     $Data | Sort-Object PricePerAlcohol | ConvertTo-Html | Set-Content $Path/index.html -Force;\
     # Create csv File
