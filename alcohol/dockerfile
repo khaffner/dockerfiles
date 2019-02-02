@@ -9,15 +9,19 @@ RUN apt-get update && apt-get install -y powershell
 # Change to powershell, lol
 SHELL ["pwsh", "-Command"]
 
-# Create folder structure and html file
-RUN New-Item -Path /usr/local/apache2/htdocs/index.html -Force
-
-# Get the data, crunch it and save it to html file
-RUN Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/khaffner/Consumer-Tools/master/Get-Alcohol.ps1'));\
-    Get-Alcohol |\
-    Sort-Object PricePerAlcohol |\
-    ConvertTo-Html |\
-    Set-Content /usr/local/apache2/htdocs/index.html -Force
+RUN $Path = '/usr/local/apache2/htdocs';\
+    # Create folder structure and html file
+    New-Item -Path $Path/index.html -Force | out-Null;\
+    # Get the function
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/khaffner/Consumer-Tools/master/Get-Alcohol.ps1'));\
+    # Run the function and save the data
+    $Data = Get-Alcohol;\
+    # Create html File
+    $Data | Sort-Object PricePerAlcohol | ConvertTo-Html | Set-Content $Path/index.html -Force;\
+    # Create csv File
+    $Data | ConvertTo-Csv -Delimiter ';' | Set-Content $Path/data.csv;\
+    # Create json data
+    $Data | Convertto-JSON | Set-Content $Path/data.json
 
 # Build: docker build --no-cache -t alcohol .
 # Run: docker run -dit -p 8080:80 alcohol
